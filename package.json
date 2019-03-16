@@ -1,0 +1,26 @@
+{
+  "name": "advanced-node-and-express",
+  "version": "1.0.0",
+  "description": "Simple Node app built on Express",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mallett002/Advanced-Node-and-Express.git"
+  },
+  "keywords": [
+    "Passport"
+  ],
+  "author": "William Mallett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mallett002/Advanced-Node-and-Express/issues"
+  },
+  "homepage": "https://github.com/mallett002/Advanced-Node-and-Express#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pug": "^2.0.3"
+  }
+}
