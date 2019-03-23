@@ -10,3 +10,9 @@
 - Convert object contents into a *key*.
 - Can be deserialized back into the object.
 - Tells us who's communicated with the server without sending original data with each request for new page.
+
+#### Authentcation Strategies
+A way of authenticating a user.
+- Local strategy: based on locally saved information (if you have them register first) 
+- Google or Github
+- [Passport](http://www.passportjs.org/) also has a number of strategies
