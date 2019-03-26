@@ -88,10 +88,22 @@ app.route('/')
 
 // show pug profile page
 app.route('/profile')
-  .get((req, res) => {
-    res.render(process.cwd() + '/views/pug/profile');
+  .get(ensureAuthenticated, (req, res) => {
+    res.render(process.cwd() + '/views/pug/profile',
+      { username: req.user.username } // pass these variables to the view
+    );
 });
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Listening on port " + process.env.PORT);
 });
+
+// middleware for ensuring a user is authenticated
+// so they can't just go to /profile, they have to log in
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next;
+  }
+  
+  return res.redirect('/');
+}
