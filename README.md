@@ -13,6 +13,6 @@
 
 #### Authentcation Strategies
 A way of authenticating a user.
-- Local strategy: based on locally saved information (if you have them register first) 
-- Google or Github
-- [Passport](http://www.passportjs.org/) also has a number of strategies
+- Local strategy: based on locally saved information (if you have them register first).
+- Google or Github offer strategies to use.
+- [Passport](http://www.passportjs.org/) also has a number of strategies.

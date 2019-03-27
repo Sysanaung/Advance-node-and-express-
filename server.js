@@ -32,7 +32,7 @@ mongo.connect(process.env.DATABASE, (err, db) => {
         );
       });
 
-      // tell passport to use an instantiated LocalStartegy object
+      // tell passport to use an instantiated LocalStartegy object for authentication
       passport.use(
         new LocalStrategy(
           (username, password, done) => {
@@ -92,6 +92,20 @@ app.route('/profile')
     res.render(process.cwd() + '/views/pug/profile',
       { username: req.user.username } // pass these variables to the view
     );
+});
+
+// log the user out
+app.route('/logout')
+  .get((req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+
+// Middleware for 404s
+app.use((req, res, next) => {
+  res.status(404)
+    .type('text')
+    .send('Not Found');
 });
 
 app.listen(process.env.PORT || 3000, () => {
