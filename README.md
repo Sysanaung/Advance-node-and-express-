@@ -14,5 +14,5 @@
 #### Authentication Strategies
 A way of authenticating a user.
 - Local strategy: based on locally saved information (if you have them register first).
-- Google, Facebook, Twitter and Github also offer strategies to use.
+- Google or Github offer strategies to use.
 - [Passport](http://www.passportjs.org/) also has a number of strategies.
