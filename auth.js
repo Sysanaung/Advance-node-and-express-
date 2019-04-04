@@ -67,7 +67,7 @@ module.exports = (app, db) => {
         $set:{ last_login: new Date() },
         $inc:{ login_count: 1 }
       },
-      { upsert:true, new: true }, // upsert true: if none make new, if found update
+      { upsert: true, new: true }, // upsert true: if none make new, if found update
       (err, doc) => {
         if (err) return cb(err);
         return cb(null, doc.value);
