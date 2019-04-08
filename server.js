@@ -43,7 +43,7 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
     // Allows access inside io connect as socket.request.user
     io.use(passportSocketIo.authorize({
       cookieParser,
-      key: express.sid,
+      key: 'express.sid',
       secret: process.env.SESSION_SECRET,
       store: sessionStore
     }));
