@@ -3,18 +3,29 @@ const bodyParser = require('body-parser');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const passport = require('passport');
 const mongo = require('mongodb').MongoClient;
+const session = require('express-session');
 const app = express();
 const routes = require('./routes');
 const auth = require('./auth');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const passportSocketIo = require("passport.socketio");
+const sessionStore = new session.MemoryStore();
+const cookieParser = require('cookie-parser');
 
-fccTesting(app); //For FCC testing purposes
 app.use('/public', express.static(process.cwd() + '/public'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'pug')
 
-app.set('view engine', 'pug');
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  key: 'express.sid',
+  store: sessionStore,
+}));
 
 mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
   if(err) {
@@ -22,14 +33,20 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
   } else {
     console.log('Successful database connection');
     
-    // authorize user
+    // authorize user and handle routes
     auth(app, db);
-    
-    // go to specific route
     routes(app, db);
     
-    // keep track of connected io users
     let currentUsers = 0;
+    
+    // Determine who is connected to io (gets passport session and deserializes it)
+    // Allows access inside io connect as socket.request.user
+    io.use(passportSocketIo.authorize({
+      cookieParser,
+      key: express.sid,
+      secret: process.env.SESSION_SECRET,
+      store: sessionStore
+    }));
     
     // socket is an individual client that has connected
     io.on('connection', socket => {
@@ -39,6 +56,13 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
       // emitting something from server to io, sends event's name and data to all connected sockets
       // on 'user count' event, emit currentUsers data (sent to client.js where handeled)
       io.emit('user count', currentUsers); // io.emit(event, data)
+      
+      // Announcing new user to chat
+      io.emit('user', { // obj accesible in client as data.name, data.currentUsers etc...
+          name: socket.request.user.name, 
+          currentUsers, 
+          connected: true // false for announcing disconnect
+      }); 
       
       // disconnect a user
       socket.on('disconnect', () => {

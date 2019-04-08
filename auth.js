@@ -2,17 +2,11 @@ const passport = require('passport');
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcrypt');
-const session = require('express-session');
 const GitHubStrategy = require('passport-github').Strategy;
 
 module.exports = (app, db) => {
   
   // middlewares
-  app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-  })); 
   app.use(passport.initialize());
   app.use(passport.session());
   
