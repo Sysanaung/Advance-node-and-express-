@@ -1,14 +1,16 @@
 dependencies:
   bcrypt: 3.0.5
   body-parser: 1.18.3
+  cookie-parser: 1.4.4
   cors: 2.8.5
   express: 4.16.4
   express-session: 1.15.6
   helmet: 3.16.0
-  mongodb: 3.2.2
+  mongodb: 3.2.3
   passport: 0.4.0
   passport-github: 1.1.0
   passport-local: 1.0.0
+  passport.socketio: 3.7.0
   pug: 2.0.3
   socket.io: 2.2.0
 packages:
@@ -311,6 +313,15 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
+  /cookie-parser/1.4.4:
+    dependencies:
+      cookie: 0.3.1
+      cookie-signature: 1.0.6
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-lo13tqF3JEtFO7FyA49CqbhaFkskRJ0u/UAiINgrIXeRCY41c88/zxtrECl8AKH3B0hj9q10+h3Kt8I7KlW4tw==
   /cookie-signature/1.0.6:
     dev: false
     resolution:
@@ -900,7 +911,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
-  /mongodb-core/3.2.2:
+  /mongodb-core/3.2.3:
     dependencies:
       bson: 1.1.1
       require_optional: 1.0.1
@@ -909,16 +920,16 @@ packages:
     optionalDependencies:
       saslprep: 1.0.2
     resolution:
-      integrity: sha512-YRgC39MuzKL0uoGoRdTmV1e9m47NbMnYmuEx4IOkgWAGXPSEzRY7cwb3N0XMmrDMnD9vp7MysNyAriIIeGgIQg==
-  /mongodb/3.2.2:
+      integrity: sha512-UyI0rmvPPkjOJV8XGWa9VCTq7R4hBVipimhnAXeSXnuAPjuTqbyfA5Ec9RcYJ1Hhu+ISnc8bJ1KfGZd4ZkYARQ==
+  /mongodb/3.2.3:
     dependencies:
-      mongodb-core: 3.2.2
+      mongodb-core: 3.2.3
       safe-buffer: 5.1.2
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-xQ6apOOV+w7VFApdaJpWhYhzartpjIDFQjG0AwgJkLh7dBs7PTsq4A3Bia2QWpDohmAzTBIdQVLMqqLy0mwt3Q==
+      integrity: sha512-jw8UyPsq4QleZ9z+t/pIVy3L++51vKdaJ2Q/XXeYxk/3cnKioAH8H6f5tkkDivrQL4PUgUOHe9uZzkpRFH1XtQ==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1107,6 +1118,12 @@ packages:
       node: '>= 0.4.0'
     resolution:
       integrity: sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
+  /passport.socketio/3.7.0:
+    dependencies:
+      xtend: 4.0.1
+    dev: false
+    resolution:
+      integrity: sha1-LuX6/paV1CgcjN3T/pdezRjmcm4=
   /passport/0.4.0:
     dependencies:
       passport-strategy: 1.0.0
@@ -1677,6 +1694,12 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha1-wodrBhaKrcQOV9l+gRkayPQ5iz4=
+  /xtend/4.0.1:
+    dev: false
+    engines:
+      node: '>=0.4'
+    resolution:
+      integrity: sha1-pcbVMr5lbiPbgg77lDofBJmNY68=
   /yallist/3.0.3:
     dev: false
     resolution:
@@ -1700,13 +1723,15 @@ shrinkwrapVersion: 3
 specifiers:
   bcrypt: ^3.0.5
   body-parser: ^1.18.3
+  cookie-parser: ^1.4.4
   cors: ^2.8.5
   express: ^4.16.4
   express-session: ^1.15.6
   helmet: ^3.16.0
-  mongodb: ^3.1.11
+  mongodb: ^3.2.3
   passport: ^0.4.0
   passport-github: ^1.1.0
   passport-local: ^1.0.0
+  passport.socketio: ^3.7.0
   pug: ^2.0.3
   socket.io: ^2.2.0
