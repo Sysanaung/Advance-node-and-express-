@@ -1,5 +1,5 @@
 // this file is loaded by the page after you've authenticated
-// $( document ).ready(function() { // Commenting out JQuery
+
   /*global io*/
 const socket = io();
   
@@ -28,6 +28,13 @@ socket.on('user', data => {
   messages.appendChild(li);
 });
 
+// Submitting a chat message
+const form = document.getElementsByTagName('form');
 
-
-// });
+form.addEventListener('submit', e => {
+  const textBox = document.getElementById('m');
+  const messageToSend = textBox.textContent;
+  textBox.textContent = '';
+  
+  socket.emit('chat message', messageToSend);
+});

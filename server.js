@@ -64,6 +64,9 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
           connected: true // false for announcing disconnect
       }); 
       
+      // listening to the socket for the event 'chat message' with the data being named 'message'
+      
+      
       // disconnect a user
       socket.on('disconnect', () => {
         console.log(`User ${socket.request.user.name} has disconnected`);
@@ -79,3 +82,4 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
 
 
 
+// Send a chat message to the server to emit to all the clients
