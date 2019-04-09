@@ -29,7 +29,7 @@ socket.on('user', data => {
 });
 
 // Submitting a chat message
-const form = document.getElementsByTagName('form');
+const form = document.getElementsByTagName('form')[0];
 
 form.addEventListener('submit', e => {
   const textBox = document.getElementById('m');
