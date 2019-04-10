@@ -65,7 +65,12 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
       }); 
       
       // listening to the socket for the event 'chat message' with the data being named 'message'
-      
+      socket.on('chat message', message => { // emit event to all sockets
+        io.emit('chat message', {
+          name: socket.request.user.name,
+          message
+        }); 
+      });
       
       // disconnect a user
       socket.on('disconnect', () => {
