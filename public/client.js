@@ -34,7 +34,7 @@ socket.on('user', data => {
   addMessageToDOM(message);
 });
 
-// Submitting a chat message
+// Send a chat message to the server to emit to all the clients
 const form = document.getElementsByTagName('form')[0];
 
 form.addEventListener('submit', e => {

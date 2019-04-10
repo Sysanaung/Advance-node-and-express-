@@ -28,63 +28,57 @@ app.use(session({
 }));
 
 mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, db) => {
-  if(err) {
-    console.log('Database error: ' + err);
-  } else {
-    console.log('Successful database connection');
-    
-    // authorize user and handle routes
-    auth(app, db);
-    routes(app, db);
-    
-    let currentUsers = 0;
-    
-    // Determine who is connected to io (gets passport session and deserializes it)
-    // Allows access inside io connect as socket.request.user
-    io.use(passportSocketIo.authorize({
-      cookieParser,
-      key: 'express.sid',
-      secret: process.env.SESSION_SECRET,
-      store: sessionStore
-    }));
-    
-    // socket is an individual client that has connected
-    io.on('connection', socket => {
-      console.log(`User ${socket.request.user.name} connected`);
-      currentUsers++; // increment the users
-      
-      // emitting something from server to io, sends event's name and data to all connected sockets
-      // on 'user count' event, emit currentUsers data (sent to client.js where handeled)
-      io.emit('user count', currentUsers); // io.emit(event, data)
-      
-      // Announcing new user to chat
-      io.emit('user', { // obj accesible in client as data.name, data.currentUsers etc...
-          name: socket.request.user.name, 
-          currentUsers, 
-          connected: true // false for announcing disconnect
+  if (err) console.log('Database error: ' + err);
+  else console.log('Successful database connection');
+  
+  // authorize user and handle routes
+  auth(app, db);
+  routes(app, db);
+  
+  http.listen(process.env.PORT || 3000);
+  
+  // Use of socket.io
+
+  // Determine who is connected to io (gets passport session and deserializes it)
+  // Allows access inside io connect as socket.request.user
+  io.use(passportSocketIo.authorize({
+    cookieParser,
+    key: 'express.sid',
+    secret: process.env.SESSION_SECRET,
+    store: sessionStore
+  }));
+  
+  let currentUsers = 0;
+  
+  // socket is an individual client that has connected
+  io.on('connection', socket => {
+    console.log(`User ${socket.request.user.name} connected`);
+    currentUsers++; // increment the users
+
+    // emitting something from server to io, sends event's name and data to all connected sockets
+    // on 'user count' event, emit currentUsers data (sent to client.js where handeled)
+    io.emit('user count', currentUsers); // io.emit(event, data)
+
+    // Announcing new user to chat
+    io.emit('user', { // obj accesible in client as data.name, data.currentUsers etc...
+        name: socket.request.user.name, 
+        currentUsers, 
+        connected: true // false for announcing disconnect
+    }); 
+
+    // listening to the socket for the event 'chat message' with the data being named 'message'
+    socket.on('chat message', message => { // emit event to all sockets
+      io.emit('chat message', {
+        name: socket.request.user.name,
+        message
       }); 
-      
-      // listening to the socket for the event 'chat message' with the data being named 'message'
-      socket.on('chat message', message => { // emit event to all sockets
-        io.emit('chat message', {
-          name: socket.request.user.name,
-          message
-        }); 
-      });
-      
-      // disconnect a user
-      socket.on('disconnect', () => {
-        console.log(`User ${socket.request.user.name} has disconnected`);
-        currentUsers--;
-        io.emit('user count', currentUsers);
-      });
     });
 
-    app.listen(process.env.PORT || 3000, () => {
-      console.log("Listening on port " + process.env.PORT);
-    });  
-}}); 
-
-
-
-// Send a chat message to the server to emit to all the clients
+    // disconnect a user
+    socket.on('disconnect', () => {
+      console.log(`User ${socket.request.user.name} has disconnected`);
+      currentUsers--;
+      io.emit('user count', currentUsers);
+    });
+  });
+}); 
